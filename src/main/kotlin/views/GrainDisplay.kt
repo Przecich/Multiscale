@@ -17,6 +17,9 @@ class GrainDisplay : View() {
 
     private var context: GraphicsContext by singleAssign()
 
+    private val size = 20
+    private val rectangleSize:Double = 300.0/size
+
     override val root = vbox {
         val canvas: Canvas = canvas(300.0, 300.0)
 
@@ -30,17 +33,17 @@ class GrainDisplay : View() {
     }
 
     private fun refreshBoard(cell: Pair<Int, Int>) {
-        val y = cell.first / 30
-        val x = cell.first % 30
+        val y = cell.first / size
+        val x = cell.first % size
         context.fill = colors[cell.second]
-        context.fillRect(x * 10.0, y * 10.0, 10.0, 10.0)
+        context.fillRect(x * rectangleSize, y * rectangleSize, rectangleSize, rectangleSize)
         if (cell.second != 0) println(cell.first)
     }
 
     private fun drawRectangle(mouseEvent: MouseEvent) {
         val color = getRandomColor()
         context.fill = color
-        context.fillRect(mouseEvent.x - mouseEvent.x % 10, mouseEvent.y - mouseEvent.y % 10, 10.0, 10.0)
-        controller.model.list[mouseEvent.y.toInt() / 10 * 30 + mouseEvent.x.toInt() / 10] = colors.indexOf(color)
+        context.fillRect(mouseEvent.x - mouseEvent.x % rectangleSize, mouseEvent.y - mouseEvent.y % rectangleSize, rectangleSize, rectangleSize)
+        controller.model.board.list[mouseEvent.y.toInt() / rectangleSize.toInt() * size + mouseEvent.x.toInt() / rectangleSize.toInt()] = colors.indexOf(color)
     }
 }

@@ -15,6 +15,9 @@ class MainView: View() {
                         controller.evolve()
                     }
                 }
+                hbox{
+                    
+                }
             }
         }
     }
