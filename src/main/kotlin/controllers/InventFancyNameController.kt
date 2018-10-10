@@ -5,7 +5,7 @@ import model.GrainGrowth
 import model.Board
 
 class InventFancyNameController: Controller(){
-    var model = GrainGrowth(20)
+    var model = GrainGrowth(10)
 
     fun evolve(){
         model.growth()
@@ -14,6 +14,9 @@ class InventFancyNameController: Controller(){
     fun addViewToModel(action: (Pair<Int,Int>)->Unit){
         model.onUpdate=action
     }
+
+    fun getBoardSize() = model.size
+
 
     fun changeSimulationSize(newSize: Int){
         model.board = Board(newSize)
