@@ -5,7 +5,7 @@ import model.GrainGrowth
 import model.Board
 
 class InventFancyNameController: Controller(){
-    var model = GrainGrowth(10)
+    var model = GrainGrowth
 
     fun evolve(){
         model.growth()

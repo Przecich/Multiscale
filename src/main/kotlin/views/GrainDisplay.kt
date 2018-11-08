@@ -17,33 +17,45 @@ class GrainDisplay : View() {
 
     private var context: GraphicsContext by singleAssign()
 
-    private val size = 20
-    private val rectangleSize:Double = 300.0/size
+
 
     override val root = vbox {
-        val canvas: Canvas = canvas(300.0, 300.0)
+        val canvas: Canvas = canvas(1000.0, 1000.0)
 
         context = canvas.graphicsContext2D
         controller.addViewToModel(::refreshBoard)
 
-        canvas.setOnMousePressed(::drawRectangle)
+        canvas.setOnMousePressed(::drawCell)
         canvas.setOnScroll {
             controller.evolve()
         }
     }
 
     private fun refreshBoard(cell: Pair<Int, Int>) {
-        val y = cell.first / size
-        val x = cell.first % size
+        val rectangleSize = getRectangleSize()
+        val y = cell.first / controller.getBoardSize()
+        val x = cell.first % controller.getBoardSize()
         context.fill = colors[cell.second]
-        context.fillRect(x * rectangleSize, y * rectangleSize, rectangleSize, rectangleSize)
+        drawSquere(x * rectangleSize, y * rectangleSize, rectangleSize)
         if (cell.second != 0) println(cell.first)
     }
 
-    private fun drawRectangle(mouseEvent: MouseEvent) {
+    private fun drawCell(mouseEvent: MouseEvent) {
+        val rectangleSize = getRectangleSize()
         val color = getRandomColor()
         context.fill = color
-        context.fillRect(mouseEvent.x - mouseEvent.x % rectangleSize, mouseEvent.y - mouseEvent.y % rectangleSize, rectangleSize, rectangleSize)
-        controller.model.board.list[mouseEvent.y.toInt() / rectangleSize.toInt() * size + mouseEvent.x.toInt() / rectangleSize.toInt()] = colors.indexOf(color)
+        drawSquere(mouseEvent.x - mouseEvent.x % rectangleSize,
+                mouseEvent.y - mouseEvent.y % rectangleSize,
+                rectangleSize)
+        println(rectangleSize)
+
+        controller.model.board.list[mouseEvent.y.toInt() / rectangleSize.toInt() * controller.getBoardSize() + mouseEvent.x.toInt() / rectangleSize.toInt()] = colors.indexOf(color)
     }
+
+    private fun drawSquere(x:Double,y:Double, size: Double){
+        context.fillRect(x ,y,  size, size)
+    }
+
+    private fun getRectangleSize() = 1000.0 / controller.getBoardSize()
+
 }
