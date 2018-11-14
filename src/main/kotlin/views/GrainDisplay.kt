@@ -5,6 +5,7 @@ import controllers.InventFancyNameController
 import javafx.scene.canvas.Canvas
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.MouseEvent
+import model.GrainGrowth
 import model.colorprovider.colors
 import model.colorprovider.getRandomColor
 
@@ -36,6 +37,7 @@ class GrainDisplay : View() {
         val y = cell.first / controller.getBoardSize()
         val x = cell.first % controller.getBoardSize()
         context.fill = colors[cell.second]
+        val bla: Double = 2 * 2.0
         drawSquere(x * rectangleSize, y * rectangleSize, rectangleSize)
         if (cell.second != 0) println(cell.first)
     }
@@ -43,19 +45,28 @@ class GrainDisplay : View() {
     private fun drawCell(mouseEvent: MouseEvent) {
         val rectangleSize = getRectangleSize()
         val color = getRandomColor()
-        context.fill = color
-        drawSquere(mouseEvent.x - mouseEvent.x % rectangleSize,
-                mouseEvent.y - mouseEvent.y % rectangleSize,
-                rectangleSize)
-        println(rectangleSize)
+        println("Board size:"+controller.getBoardSize())
+        println("Rectangle size:"+rectangleSize.toInt())
+        println("MouseEvent x:"+mouseEvent.x.toInt())
+        println("MouseEvent y:"+mouseEvent.y.toInt())
 
-        controller.model.board.list[mouseEvent.y.toInt() / rectangleSize.toInt() * controller.getBoardSize() + mouseEvent.x.toInt() / rectangleSize.toInt()] = colors.indexOf(color)
+
+
+        val postion =   mouseEvent.x.toInt() / rectangleSize.toInt() to mouseEvent.y.toInt() / rectangleSize.toInt()
+
+        println("MPosition:"+postion)
+
+        if(GrainGrowth.inclusion.isInclusionSelect) {
+            GrainGrowth.drawInclusion(postion)
+        }else{
+            GrainGrowth.selectGrain(postion, color)
+        }
+
     }
 
     private fun drawSquere(x:Double,y:Double, size: Double){
         context.fillRect(x ,y,  size, size)
     }
 
-    private fun getRectangleSize() = 1000.0 / controller.getBoardSize()
-
+    private fun getRectangleSize() = Math.floor(1000.0 / controller.getBoardSize())
 }

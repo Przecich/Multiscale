@@ -13,12 +13,13 @@ class InventFancyNameController: Controller(){
 
     fun addViewToModel(action: (Pair<Int,Int>)->Unit){
         model.onUpdate=action
+        model.board.onUpdate =model.onUpdate
     }
 
     fun getBoardSize() = model.size
 
 
     fun changeSimulationSize(newSize: Int){
-        model.board = Board(newSize)
+        //model.board = Board(newSize)
     }
 }
