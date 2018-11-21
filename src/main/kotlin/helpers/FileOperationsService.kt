@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder
 import javafx.scene.paint.Color
 import model.Board
 import model.GrainGrowth
-import model.colorprovider.colors
 import java.io.File
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
@@ -37,7 +36,7 @@ object FileOperationsService {
 
         for (x in 0 until size) {
             for (y in 0 until size) {
-                var oldColor = colors[grainColors[y*size+x]]
+                var oldColor = grainColors[y*size+x]
                 val newColor = java.awt.Color(oldColor.getRed().toFloat(),
                         oldColor.getGreen().toFloat() ,
                         oldColor.getBlue().toFloat() ,
@@ -54,7 +53,7 @@ object FileOperationsService {
     fun loadFromBmp(path:String){
         val bi = ImageIO.read(File(path))
         val size = bi.width
-        GrainGrowth.board.list = IntArray(size * size).toMutableList()
+        GrainGrowth.board.list = Array(size * size){Color.WHITE}
 
         for (x in 0 until size) {
             for (y in 0 until size) {
@@ -63,11 +62,5 @@ object FileOperationsService {
                 GrainGrowth.selectGrain(x to y,Color.rgb(color.red,color.green,color.blue))
             }
         }
-
-
     }
-
-
-
-    data class BoardSaveFormat(val board: Board,val size:Int)
 }

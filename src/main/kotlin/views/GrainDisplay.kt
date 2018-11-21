@@ -4,9 +4,10 @@ package views
 import controllers.InventFancyNameController
 import javafx.scene.canvas.Canvas
 import javafx.scene.canvas.GraphicsContext
+import javafx.scene.input.MouseButton
 import javafx.scene.input.MouseEvent
+import javafx.scene.paint.Color
 import model.GrainGrowth
-import model.colorprovider.colors
 import model.colorprovider.getRandomColor
 
 import tornadofx.*
@@ -32,36 +33,28 @@ class GrainDisplay : View() {
         }
     }
 
-    private fun refreshBoard(cell: Pair<Int, Int>) {
+    private fun refreshBoard(cell: Pair<Int, Color>) {
         val rectangleSize = getRectangleSize()
         val y = cell.first / controller.getBoardSize()
         val x = cell.first % controller.getBoardSize()
-        context.fill = colors[cell.second]
-        val bla: Double = 2 * 2.0
+        context.fill = cell.second
         drawSquere(x * rectangleSize, y * rectangleSize, rectangleSize)
-        if (cell.second != 0) println(cell.first)
     }
 
     private fun drawCell(mouseEvent: MouseEvent) {
-        val rectangleSize = getRectangleSize()
-        val color = getRandomColor()
-        println("Board size:"+controller.getBoardSize())
-        println("Rectangle size:"+rectangleSize.toInt())
-        println("MouseEvent x:"+mouseEvent.x.toInt())
-        println("MouseEvent y:"+mouseEvent.y.toInt())
+        if(mouseEvent.button == MouseButton.SECONDARY) {
+            GrainGrowth.mergeSelectedGrains()
+        }else {
+            val rectangleSize = getRectangleSize()
+            val color = getRandomColor()
 
+            val postion = mouseEvent.x.toInt() / rectangleSize.toInt() to mouseEvent.y.toInt() / rectangleSize.toInt()
 
-
-        val postion =   mouseEvent.x.toInt() / rectangleSize.toInt() to mouseEvent.y.toInt() / rectangleSize.toInt()
-
-        println("MPosition:"+postion)
-
-        if(GrainGrowth.inclusion.isInclusionSelect) {
-            GrainGrowth.drawInclusion(postion)
-        }else{
-            GrainGrowth.selectGrain(postion, color)
+            if (GrainGrowth.inclusion.isInclusionSelect)
+                GrainGrowth.drawInclusion(postion)
+            else
+                GrainGrowth.selectGrain(postion, color)
         }
-
     }
 
     private fun drawSquere(x:Double,y:Double, size: Double){

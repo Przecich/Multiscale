@@ -22,17 +22,51 @@ class MainView: View() {
         right{
             vbox{
                 spacing = 10.0
-                button("Restart"){
-                    action{
-                        controller.model.reset()
+                hbox{
+                    spacing = 10.0
+                    button("Remove grains"){
+                        action{
+                            controller.model.reset()
+                        }
+                    }
+                    button("Draw borders"){
+                        action{
+                            GrainGrowth.drawBorders()
+                        }
+                    }
+
+                    button("Clear N.Borders"){
+                        action{
+                            GrainGrowth.resetNonBorders()
+                        }
+                    }
+                    button("Restart"){
+                        action{
+                            controller.model.fullReset()
+                        }
                     }
                 }
-                vbox {
-                    sizeMenu()
+
+
+                sizeMenu()
+
+                hbox{
+                    val textfield = textfield {
+
+                    }
+                    button("Generate").action {
+                        GrainGrowth.selectRandom(textfield.text.toInt())
+                    }
                 }
-                vbox{
-                    neighbourDropDown()
-                }
+
+
+
+                neighbourDropDown()
+
+
+
+
+
                 hbox {
                     inclusionMenu()
                 }
@@ -80,7 +114,8 @@ class MainView: View() {
     private fun VBox.neighbourDropDown(){
         label("Neighbour type: ")
         combobox(controller.model.neighbourhoodType,
-                FXCollections.observableArrayList("Moore","Neuman"))
+                FXCollections.observableArrayList("Neuman","Moore 2.0"))
                 .selectionModel.selectFirst()
+        textfield { bind(GrainGrowth.mooreValue) }
     }
 }

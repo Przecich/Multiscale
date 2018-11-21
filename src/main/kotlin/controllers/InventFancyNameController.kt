@@ -1,5 +1,6 @@
 package controllers
 
+import javafx.scene.paint.Color
 import tornadofx.Controller
 import model.GrainGrowth
 import model.Board
@@ -11,7 +12,7 @@ class InventFancyNameController: Controller(){
         model.growth()
     }
 
-    fun addViewToModel(action: (Pair<Int,Int>)->Unit){
+    fun addViewToModel(action: (Pair<Int, Color>)->Unit){
         model.onUpdate=action
         model.board.onUpdate =model.onUpdate
     }
