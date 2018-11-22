@@ -60,9 +60,10 @@ class MainView: View() {
                 }
 
 
-
-                neighbourDropDown()
-
+                hbox {
+                    spacing = 10.0
+                    neighbourDropDown()
+                }
 
 
 
@@ -111,7 +112,7 @@ class MainView: View() {
         }
     }
 
-    private fun VBox.neighbourDropDown(){
+    private fun HBox.neighbourDropDown(){
         label("Neighbour type: ")
         combobox(controller.model.neighbourhoodType,
                 FXCollections.observableArrayList("Neuman","Moore 2.0"))
