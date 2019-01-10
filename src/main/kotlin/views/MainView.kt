@@ -71,6 +71,93 @@ class MainView: View() {
                 hbox {
                     inclusionMenu()
                 }
+                hbox{
+                    spacing = 10.0
+                    button("Monte Carlo").action {
+                        GrainGrowth.monteCarloGeneration(7)
+                    }
+
+                    button("Monte Carlo iteration").action {
+                        GrainGrowth.monteCarloIteration(1)
+                    }
+
+                    textfield("2") {
+                        textProperty().addListener { _, _, c ->
+                            GrainGrowth.monteCarloColors =  if(c.isEmpty())  1 else c.toInt()
+                        }
+                    }
+                }
+
+                hbox{
+                    spacing = 10.0
+                    textfield("0") {
+                        textProperty().addListener { _, _, c ->
+                            GrainGrowth.energyIn =  if(c.isEmpty())  0 else c.toInt()
+                        }
+                    }
+                    textfield("0") {
+                        textProperty().addListener { _, _, c ->
+                            GrainGrowth.eneryBorder =  if(c.isEmpty())  0 else c.toInt()
+                        }
+                    }
+
+                    button("Distribute energy").action {
+                        GrainGrowth.distributeEnergy()
+                    }
+
+                    button("Show Energy").action {
+                        GrainGrowth.displayEnergy()
+                    }
+
+                    button("Revert Energy").action {
+                        GrainGrowth.loadStructure()
+                    }
+
+                }
+
+                hbox{
+                    spacing = 10.0
+                    textfield("0") {
+                        textProperty().addListener { _, _, c ->
+                            GrainGrowth.nucleaNumber =  if(c.isEmpty())  0 else c.toInt()
+                        }
+                    }
+                    togglegroup{
+                        togglebutton("Border")
+                        selectedToggleProperty().addListener { _,_,new ->
+                            GrainGrowth.isBorder = new != null
+                        }
+
+                    }
+
+                    togglegroup{
+                        togglebutton("Constant").userData = "Const"
+                        togglebutton("Increasing").userData = "Incr"
+                        togglebutton ("Site").userData = "Site"
+                        selectedToggleProperty().addListener { _,_,new ->
+                            GrainGrowth.increaseType = new.userData.toString()
+                        }
+
+
+                    }
+
+
+                    button("Generate").action {
+                        GrainGrowth.generateNucleons()
+                    }
+
+
+                }
+                hbox{
+                    spacing = 10.0
+
+
+                    button("Recrystalise").action {
+                        GrainGrowth.recrystalise()
+                    }
+
+
+                }
             }
         }
     }

@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import javafx.scene.paint.Color
 import model.Board
+import model.Cell
 import model.GrainGrowth
 import java.io.File
 import java.awt.image.BufferedImage
@@ -28,7 +29,7 @@ object FileOperationsService {
     }
 
     fun saveToBmp(path:String){
-        val grainColors = GrainGrowth.board.list
+        val grainColors = GrainGrowth.board.list.map { it.color }
         val size = GrainGrowth.board.size
 
         val bufferedImage = BufferedImage(size, size,
@@ -53,7 +54,7 @@ object FileOperationsService {
     fun loadFromBmp(path:String){
         val bi = ImageIO.read(File(path))
         val size = bi.width
-        GrainGrowth.board.list = Array(size * size){Color.WHITE}
+        GrainGrowth.board.list =  Array(size*size){ Cell(Color.WHITE,0) }
 
         for (x in 0 until size) {
             for (y in 0 until size) {
